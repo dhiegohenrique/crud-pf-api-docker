@@ -87,8 +87,12 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const person = await personService.deleteItem(req.params.id)
+    const id = req.params.id
+    const currentPerson = await personService.getAddressAndContact(id)
+    const person = await personService.deleteItem(id)
     if (person) {
+      await addressService.deleteItem(currentPerson.address)
+      await contactService.deleteItem(currentPerson.contact)
       return res.status(HttpStatus.NO_CONTENT).send()
     }
 

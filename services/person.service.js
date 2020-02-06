@@ -30,10 +30,20 @@ const deleteItem = (_id) => {
   return baseService.deleteItem(Person, _id)
 }
 
+const getAddressAndContact = (_id) => {
+  return new Promise((resolve) => {
+    Person.findById(_id).select(['address', 'contact'])
+      .then((person) => {
+        resolve(person)
+      })
+  })
+}
+
 module.exports = {
   update,
   get,
   insert,
   getById,
-  deleteItem
+  deleteItem,
+  getAddressAndContact
 }
