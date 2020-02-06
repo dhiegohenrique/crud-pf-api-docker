@@ -19,7 +19,7 @@ const personSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Informe o e-mail.']
   },
-  birthdayDate: {
+  birthDate: {
     type: Date,
     required: [true, 'Informe a data de nascimento.']
   },
@@ -27,18 +27,18 @@ const personSchema = new mongoose.Schema({
     type: Date,
     default: moment()
   },
-  // address: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'Address'
-  //   }
-  // ],
-  // contact: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'Contact'
-  //   }
-  // ],
+  address: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Address'
+    }
+  ],
+  contact: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Contact'
+    }
+  ]
 })
 
 personSchema.path('cpf').validate((cpf) => {
