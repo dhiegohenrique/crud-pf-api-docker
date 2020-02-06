@@ -2,7 +2,6 @@ const routes = require('./routes')
 const mongoose = require('mongoose')
 const swagger = require('./config/swagger')
 const config = require('./config/config')()
-const socket = require('./socket/socket')
 
 const fastify = require('fastify')({
   logger: true
@@ -24,7 +23,6 @@ mongoose.connect(config.db)
 const start = async () => {
   try {
     await fastify.listen(config.port, '0.0.0.0')
-    socket.initialize(fastify.server)
     fastify.swagger()
     fastify.log.info(`server listening on ${fastify.server.address().port}`)
   } catch (err) {
