@@ -3,17 +3,19 @@ exports.options = {
   exposeRoute: true,
   swagger: {
     info: {
-      title: 'Fastify API',
-      description: 'Building a blazing fast REST API with Node.js, MongoDB, Fastify and Swagger',
+      title: 'CRUD Pessoa Física API',
+      description: 'CRUD para manter cadastros de pessoas físicas com seus dados, endereços e contatos.',
       version: '1.0.0'
-    },
-    externalDocs: {
-      url: 'https://swagger.io',
-      description: 'Find more info here'
     },
     host: 'localhost',
     schemes: ['http'],
     consumes: ['application/json'],
-    produces: ['application/json']
+    produces: ['application/json'],
+    servers: [
+      {
+        url: 'http://api.example.com/v1',
+        description: 'Optional server description, e.g. Main (production) server'
+      }
+    ]
   }
 }
