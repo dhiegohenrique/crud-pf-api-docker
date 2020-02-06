@@ -18,6 +18,11 @@ const routes = [
     handler: personController.get
   },
   {
+    method: 'GET',
+    url: '/person/:id',
+    handler: personController.getById
+  },
+  {
     method: 'PUT',
     url: '/person',
     handler: personController.update
