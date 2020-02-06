@@ -5,6 +5,9 @@ const addressService = require('../services/address.service')
 const contactService = require('../services/contact.service')
 
 exports.insert = async (req, res) => {
+  let addressIds
+  let contactIds
+
   try {
     const person = req.body
 
@@ -20,15 +23,23 @@ exports.insert = async (req, res) => {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(validate)
     }
 
-    const addressIds = await addressService.insert(address)
+    addressIds = await addressService.insert(address)
     person.address = addressIds
 
-    const contactIds = await contactService.insert(contact)
+    contactIds = await contactService.insert(contact)
     person.contact = contactIds
 
     const _id = await personService.insert(person)
     res.status(HttpStatus.CREATED).send(_id)
   } catch (err) {
+    if (addressIds && addressIds.length) {
+      await addressService.deleteItem(addressIds)
+    }
+
+    if (contactIds && contactIds.length) {
+      await contactService.deleteItem(contactIds)
+    }
+
     throw boom.boomify(err)
   }
 }
