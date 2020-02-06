@@ -12,19 +12,25 @@ const personSchema = new mongoose.Schema({
     type: String,
     default: true
   },
-  dateNascimento: {
+  birthdayDate: {
     type: Date,
     default: true
   },
-  dateCadastro: {
+  creationDate: {
     type: Date
   },
-  address: {
-    type: Array
-  },
-  contact: {
-    type: Array
-  }
+  address: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Address'
+    }
+  ],
+  contact: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Contact'
+    }
+  ],
 })
 
 module.exports = mongoose.model('Person', personSchema)
