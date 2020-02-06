@@ -9,8 +9,8 @@ const get = (query) => {
   return baseService.get(Person, query)
 }
 
-const insert = (body) => {
-  return baseService.insert(Person, body)
+const insert = (person) => {
+  return baseService.insert(Person, person)
 }
 
 const getById = (_id) => {
