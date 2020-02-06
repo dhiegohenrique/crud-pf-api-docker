@@ -39,11 +39,21 @@ const getById = (Model, _id) => {
 }
 
 const insert = (Model, item) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
-      item = new Model(item)
-      item = await item.save()
-      resolve(item._id)
+      if (!Array.isArray(item)) {
+        item = [item]
+      }
+
+      Model.collection.insertMany(item)
+        .then((res) => {
+          const insertedIds = res.insertedIds
+          const arrayIds = []
+          Object.keys(insertedIds).forEach((key) => {
+            arrayIds.push(insertedIds[key])
+          })
+          resolve(arrayIds)
+        })
     } catch (error) {
       reject(error)
     }
