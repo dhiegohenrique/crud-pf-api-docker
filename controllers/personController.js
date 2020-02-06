@@ -8,15 +8,23 @@ exports.insert = async (req, res) => {
   try {
     const person = req.body
 
-    let validate = await addressService.validate(person.address)
+    const address = person.address
+    let validate = await addressService.validate(address)
     if (!validate.isValid) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(validate)
     }
 
-    validate = await contactService.validate(person.contact)
+    const contact = person.contact
+    validate = await contactService.validate(contact)
     if (!validate.isValid) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(validate)
     }
+
+    const addressIds = await addressService.insert(address)
+    person.address = addressIds
+
+    const contactIds = await contactService.insert(contact)
+    person.contact = contactIds
 
     const _id = await personService.insert(person)
     res.status(HttpStatus.CREATED).send(_id)
