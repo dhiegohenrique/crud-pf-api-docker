@@ -119,6 +119,12 @@ const routes = [
     handler: personController.getById,
     schema: {
       summary: 'Retornar uma pessoa',
+      params: {
+        type: 'string',
+        properties: {
+          id: { type: 'string' }
+        }
+      },
       response: {
         200: {
           description: 'Pessoa retornada com sucesso.',
