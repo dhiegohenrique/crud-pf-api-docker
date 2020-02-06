@@ -61,7 +61,11 @@ const insert = (Model, item) => {
 }
 
 const deleteItem = (Model, _id) => {
-  return Model.findOneAndRemove(_id)
+  if (!Array.isArray(_id)) {
+    _id = [_id]
+  }
+
+  return Model.remove({ '_id': { $in: _id } })
 }
 
 module.exports = {
