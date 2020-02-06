@@ -21,6 +21,13 @@ const deleteItem = (_id) => {
 
 const validate = (address) => {
   return new Promise((resolve) => {
+    if (!address || !address.length) {
+      return resolve({
+        isValid: false,
+        message: 'Informe o endereço.'
+      })
+    }
+
     if (!Array.isArray) {
       address = [address]
     }
@@ -67,6 +74,7 @@ const validate = (address) => {
 
       if (index === (address.length - 1)) {
         resolve({
+          isValid: !errors.length,
           message: {
             address: {
               errors
@@ -77,7 +85,6 @@ const validate = (address) => {
     })
   })
 }
-
 
 module.exports = {
   update,
