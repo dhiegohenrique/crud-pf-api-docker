@@ -1,6 +1,5 @@
 const Contact = require('../models/Contact')
 const baseService = require('./base.service')
-const brazilianUtils = require('@brazilian-utils/brazilian-utils')
 
 const update = (contact) => {
   return baseService.update(Contact, contact)
@@ -11,6 +10,16 @@ const get = (query) => {
 }
 
 const insert = (contact) => {
+  if (!Array.isArray(contact)) {
+    contact = [contact]
+  }
+
+  contact = contact.map((currentContact) => {
+    return {
+      cellphone: getFormattedCellphone(currentContact)
+    }
+  })
+
   return baseService.insert(Contact, contact)
 }
 
@@ -40,8 +49,16 @@ const validate = (contact) => {
 
       if (!currentContact) {
         error.message = 'Informe o celular'
-      } else if (!brazilianUtils.isValidPhone(currentContact)) {
-        error.message = 'Informe um celular válido.'
+      } else {
+        const splitNumbers = currentContact.split('')
+        const number = splitNumbers[0]
+        const sameNumber = splitNumbers.every((currentNumber) => {
+          return currentNumber === number
+        })
+
+        if (!(currentContact.length === 10 || currentContact.length === 11) || sameNumber) {
+          error.message = 'Informe um celular válido.'
+        }
       }
 
       if (Object.keys(error).length > 1) {
@@ -60,6 +77,13 @@ const validate = (contact) => {
       }
     })
   })
+}
+
+const getFormattedCellphone = (cellphone) => {
+  const ddd = cellphone.substring(0, 2)
+  const final = cellphone.substring(cellphone.length - 4)
+  const meio = cellphone.substring(2, cellphone.indexOf(final))
+  return `(${ddd})${meio}-${final}`
 }
 
 module.exports = {
