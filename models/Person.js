@@ -21,13 +21,13 @@ const personSchema = new mongoose.Schema({
   },
   address: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Address'
     }
   ],
   contact: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Contact'
     }
   ],
