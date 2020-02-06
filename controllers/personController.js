@@ -1,10 +1,24 @@
 const boom = require('boom')
 const HttpStatus = require('http-status-codes')
 const personService = require('../services/person.service')
+const addressService = require('../services/address.service')
 
 exports.insert = async (req, res) => {
   try {
-    const _id = await personService.insert(req.body)
+    const person = req.body
+    const address = person.address
+    if (!address || !address.length) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        message: 'Informe o endereço.'
+      })
+    } else {
+      const validate = await addressService.validate(address)
+      if (validate.message.address.errors.length) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(validate)
+      }
+    }
+
+    const _id = await personService.insert(person)
     res.status(HttpStatus.CREATED).send(_id)
   } catch (err) {
     throw boom.boomify(err)
