@@ -1,63 +1,52 @@
 const mongoose = require('mongoose')
+const cpfGenerator = require('@fnando/cpf/dist/node')
+const validator = require('validator')
+const moment = require('moment-timezone')
+moment.tz.setDefault('America/Sao_Paulo')
+
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: [true, 'Informe o nome.'],
+    maxlength: [100, 'O tamanho máximo do campo é 100 caracteres.'],
+    minlength: [3, 'Insira pelo menos 3 caracteres.']
   },
   cpf: {
     type: String,
-    required: true
+    required: [true, 'Informe o cpf.'],
   },
   email: {
     type: String,
-    default: true
+    required: [true, 'Informe o e-mail.']
   },
   birthdayDate: {
     type: Date,
-    default: true
+    required: [true, 'Informe a data de nascimento.']
   },
   creationDate: {
-    type: Date
+    type: Date,
+    default: moment()
   },
-  address: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address'
-    }
-  ],
-  contact: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Contact'
-    }
-  ],
+  // address: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Address'
+  //   }
+  // ],
+  // contact: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Contact'
+  //   }
+  // ],
 })
 
 personSchema.path('cpf').validate((cpf) => {
-  cpf = cpf.replace(/\D/g, '')
-  const index = 0
-  let sum = 0
-  cpf = cpf.split('')
-  const dv11 = cpf[cpf.length - 2]
-  const dv12 = cpf[cpf.length - 1]
-  cpf.splice(cpf.length - 2, 2)
-  for (index = 0;index < cpf.length;index++) {
-    sum += cpf[index] * (10 - index)
-  }
-
-  const dv21 = (sum % 11 < 2) ? 0 : (11 - (sum % 11))
-  cpf.push(dv21)
-  sum = 0
-  for (index = 0;index < cpf.length;index++) {
-    sum += cpf[index] * (11 - index)
-  }
-  var dv22 = (sum % 11 < 2) ? 0 : (11 - (sum % 11))
-
-  if (dv11 == dv21 && dv12 == dv22) {
-    return true
-  }
-
-  return false
+  return cpfGenerator.isValid(cpf)
 }, 'O cpf informado não é válido.')
+
+personSchema.path('email').validate((email) => {
+  return validator.isEmail(email)
+}, 'O e-mail informado não é válido')
 
 module.exports = mongoose.model('Person', personSchema)
