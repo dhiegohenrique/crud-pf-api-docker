@@ -67,7 +67,18 @@ exports.getById = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    const newItems = await personService.update(req.body)
+    const person = req.body
+    const address = person.address
+    if (address && address.length) {
+      await addressService.update(address)
+    }
+
+    const contact = person.contact
+    if (contact && contact.length) {
+      await contactService.update(contact)
+    }
+
+    const newItems = await personService.update(person)
     res.status(HttpStatus.OK).send(newItems)
   } catch (err) {
     throw boom.boomify(err)

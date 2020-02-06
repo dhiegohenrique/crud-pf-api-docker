@@ -17,7 +17,7 @@ const update = (Model, item) => {
         } else {
           let newModel = new Model(currentItem)
           newModel = await newModel.save()
-          newItems.push(newModel)
+          newItems.push(newModel._id)
         }
 
         if (index === (item.length - 1)) {
@@ -31,7 +31,7 @@ const update = (Model, item) => {
 }
 
 const get = (Model, query) => {
-  return Model.find(query).sort({ title: 1 })
+  return Model.find(query)
 }
 
 const getById = (Model, _id) => {
