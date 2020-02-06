@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const addressSchema = new mongoose.Schema({
-  logradouro: {
+  street: {
     type: String,
     required: true
   },
