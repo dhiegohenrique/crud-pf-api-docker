@@ -1,0 +1,3 @@
+test/init
+--reporter dot
+--ui bdd

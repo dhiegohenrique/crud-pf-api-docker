@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/*.test.js -t 10000 --exit --reporter mocha-multi-reporters",
     "start": "node index.js"
   },
   "author": "dhiego",
@@ -20,5 +20,10 @@
     "moment-timezone": "^0.5.26",
     "mongoose": "^5.8.11",
     "validator": "^12.2.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.0.1",
+    "mocha-multi-reporters": "^1.1.7"
   }
 }
