@@ -1,6 +1,8 @@
 const Person = require('../models/Person')
 const baseService = require('./base.service')
 const ObjectId = require('mongodb').ObjectID
+const moment = require('moment-timezone')
+moment.tz.setDefault('America/Sao_Paulo')
 
 const update = (person) => {
   return baseService.update(Person, person)
@@ -11,6 +13,8 @@ const get = (query) => {
 }
 
 const insert = (person) => {
+  person.creationDate = new Date()
+
   person.address = person.address.map((address) => {
     return new ObjectId(address)
   })
