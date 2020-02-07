@@ -1,0 +1,6 @@
+{
+  "ui": "bdd",
+  "timeout": 2000,
+  "reporter": "mocha-multi-reporters",
+  "watch-files": ["test/*.test.js"]
+}
