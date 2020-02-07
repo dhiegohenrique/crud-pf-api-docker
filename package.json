@@ -10,7 +10,6 @@
   "author": "dhiego",
   "license": "ISC",
   "dependencies": {
-    "@fnando/cpf": "^0.1.1",
     "boom": "^7.3.0",
     "cep-promise": "^3.0.9",
     "fastify": "^2.1.0",
@@ -22,6 +21,8 @@
     "validator": "^12.2.0"
   },
   "devDependencies": {
+    "@fnando/cpf": "^0.1.1",
+    "axios": "^0.19.2",
     "chai": "^4.2.0",
     "mocha": "^7.0.1",
     "mocha-multi-reporters": "^1.1.7"
