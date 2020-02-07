@@ -16,7 +16,12 @@ const post = (person) => {
   return client.post('/person', person)
 }
 
+const put = (person) => {
+  return client.put('/person', person)
+}
+
 module.exports = {
   get,
-  post
+  post,
+  put
 }
