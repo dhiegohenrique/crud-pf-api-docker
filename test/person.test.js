@@ -120,7 +120,7 @@ describe('Person', () => {
     compareContact(updatedPerson.contact[0], updatedContact)
   })
 
-  it('Should delete person', async () => {
+  xit('Should delete person', async () => {
     let { person } = await insertPerson()
     let personId = await personService.insert(person)
     personId = personId[0]
@@ -136,6 +136,33 @@ describe('Person', () => {
 
     const deletedContact = await contactService.getById(person.contact)
     expect(deletedContact).to.be.null
+  })
+
+  it('Should return all person', async () => {
+    const arrayPerson = []
+    for (let index = 0; index < 3; index++) {
+      let { person } = await insertPerson()
+      let personId = await personService.insert(person)
+      person._id = personId[0]
+
+      arrayPerson.push(person)
+    }
+
+    const res = await utils.get()
+    expect(res.status).to.equal(HttpStatus.OK)
+
+    const currentPerson = res.data
+    expect(currentPerson.length).to.equal(arrayPerson.length)
+
+    for (let index = 0; index < currentPerson.length; index++) {
+      const person = currentPerson[index]
+      Object.keys(person).forEach((key) => {
+        const value = person[key]
+        if (typeof value === 'string' || value instanceof String) {
+          expect(value).to.be.not.null
+        }
+      })
+    }
   })
 })
 
@@ -155,7 +182,7 @@ const getPerson = () => {
     name: `Nome ${time}`,
     'cpf': cpf.generate(),
     email: `email${time}@email.com`,
-    birthDate: moment(),
+    birthDate: new Date(),
     address: [
       {
         street: `Rua ${time}`,

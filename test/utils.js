@@ -7,9 +7,11 @@ const client = axios.create({
 })
 
 const get = () => {
-  return new Promise((resolve) => {
+  return client.get('/person')
+}
 
-  })
+const getById = (_id) => {
+  return client.get(`/person/${new String(_id)}`)
 }
 
 const post = (person) => {
@@ -26,6 +28,7 @@ const deletePerson = (_id) => {
 
 module.exports = {
   get,
+  getById,
   post,
   put,
   deletePerson
