@@ -46,7 +46,7 @@ const routes = [
           contact: {
             type: 'array',
             items: {
-              type: 'object',
+              type: 'string',
               properties: {
                 cellphone: { type: 'string' }
               }
@@ -59,7 +59,7 @@ const routes = [
           description: 'Pessoa inserida com sucesso.',
           type: 'object',
           properties: {
-            id: { type: 'string' }
+            _id: { type: 'string' }
           }
         }
       }
