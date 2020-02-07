@@ -1,16 +1,22 @@
 process.env.NODE_ENV = 'test'
-
+const db = require('../db/db')
 let server
 
-before(() => {
+before(async () => {
   console.log('Starting up...')
-  server = require('../index')
+  server = require('../server')
+  try {
+    await db.connect()
+    await server.initialize()
+  } catch (error) {
+    console.error(error)
+  }
   console.log('Done!')
 })
 
 after(async () => {
   console.log('Cleaning up...')
-  server.close()
-  server.dropDatabase()
+  await server.close()
+  await db.dropDatabase()
   console.log('Finished')
 })
