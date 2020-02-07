@@ -183,7 +183,7 @@ const routes = [
             items: {
               type: 'object',
               properties: {
-                id: { type: 'string', nullable: true },
+                _id: { type: 'string' },
                 street: { type: 'string' },
                 cep: { type: 'string' },
                 neighborhood: { type: 'string' },

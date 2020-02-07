@@ -15,7 +15,7 @@ describe('Person', () => {
     time = new Date().getTime()
   })
 
-  it('Should add new person', async () => {
+  xit('Should add new person', async () => {
     const person = getPerson()
 
     const res = await utils.post(person)
@@ -25,15 +25,8 @@ describe('Person', () => {
     expect(insertedPerson._id).to.be.not.null
   })
 
-  it('Should update person data', async () => {
-    let person = getPerson()
-    const personAddress = cloneDeep(person.address)
-    const addressId = await addressService.insert(person.address)
-    person.address = addressId
-
-    const personContact = cloneDeep(person.contact)
-    const contactId = await contactService.insert(person.contact)
-    person.contact = contactId
+  xit('Should update person data', async () => {
+    let { person, personAddress, personContact } = await insertPerson()
 
     const personId = await personService.insert(person)
     person._id = personId[0]
@@ -45,7 +38,7 @@ describe('Person', () => {
     delete person.address
     delete person.contact
 
-    res = await utils.put(person)
+    const res = await utils.put(person)
     expect(res.status).to.equal(HttpStatus.OK)
 
     const updatedPerson = await personService.getById(person._id)
@@ -72,6 +65,35 @@ describe('Person', () => {
     updatedContact = JSON.parse(JSON.stringify(updatedContact))
     delete updatedContact._id
     compareContact(personContact[0], updatedContact)
+  })
+
+  it('Should update address', async () => {
+    let { person } = await insertPerson()
+    const personId = await personService.insert(person)
+
+    const updatedPerson = {
+      _id: personId[0],
+      address: [
+        {
+          _id: new String(person.address),
+          street: `Rua editada ${time}`,
+          cep: '88036420',
+          neighborhood: `Bairro editado ${time}`,
+          city: `Cidade editada ${time}`,
+          uf: 'pr'
+        }
+      ],
+    }
+
+    const res = await utils.put(updatedPerson)
+    expect(res.status).to.equal(HttpStatus.OK)
+
+    const currentPerson = await personService.getById(person._id)
+    let updatedAddress = currentPerson.address[0]
+    updatedAddress = JSON.parse(JSON.stringify(updatedAddress))
+    delete updatedAddress._id
+
+    compareAddress(updatedPerson.address[0], updatedAddress)
   })
 })
 
@@ -123,4 +145,22 @@ const compareAddress = (address1, address2) => {
 
 const compareContact = (contact1, contact2) => {
   expect(contactService.getFormattedCellphone(contact1)).to.equal(contact2.cellphone)
+}
+
+const insertPerson = () => {
+  return new Promise(async (resolve) => {
+    let person = getPerson()
+    const personAddress = cloneDeep(person.address)
+    const addressId = await addressService.insert(person.address)
+    person.address = addressId
+
+    const personContact = cloneDeep(person.contact)
+    const contactId = await contactService.insert(person.contact)
+    person.contact = contactId
+    resolve({
+      person,
+      personAddress,
+      personContact
+    })
+  })
 }

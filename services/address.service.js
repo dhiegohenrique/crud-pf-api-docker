@@ -6,15 +6,23 @@ const ObjectId = require('mongodb').ObjectID
 
 const update = (address) => {
   return new Promise(async (resolve) => {
-    let uf = address.uf
-    if (uf) {
-      uf = await stateService.getId(uf)
-      uf = new ObjectId(uf)
-      address.uf = uf
+    if (!Array.isArray(address)) {
+      address = [address]
     }
 
-    const res = await baseService.update(Address, address)
-    resolve(res)
+    address.forEach(async (currentAddress, index) => {
+      let uf = currentAddress.uf
+      if (uf) {
+        uf = await stateService.getId(uf)
+        uf = new ObjectId(uf)
+        currentAddress.uf = uf
+      }
+
+      if (index === (address.length - 1)) {
+        const res = await baseService.update(Address, address)
+        resolve(res)
+      }
+    })
   })
 }
 
