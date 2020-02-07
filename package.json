@@ -24,6 +24,7 @@
     "@fnando/cpf": "^0.1.1",
     "axios": "^0.19.2",
     "chai": "^4.2.0",
+    "clone-deep": "^4.0.1",
     "mocha": "^7.0.1",
     "mocha-multi-reporters": "^1.1.7"
   }
