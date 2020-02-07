@@ -30,13 +30,15 @@ const personSchema = new mongoose.Schema({
   address: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address'
+      ref: 'Address',
+      required: true
     }
   ],
   contact: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Contact'
+      ref: 'Contact',
+      required: true
     }
   ]
 })
