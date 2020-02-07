@@ -91,5 +91,6 @@ module.exports = {
   get,
   insert,
   deleteItem,
-  validate
+  validate,
+  getFormattedCellphone
 }
