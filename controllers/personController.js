@@ -30,7 +30,7 @@ exports.insert = async (req, res) => {
     person.contact = contactIds
 
     const _id = await personService.insert(person)
-    res.status(HttpStatus.CREATED).send(_id)
+    res.status(HttpStatus.CREATED).send({ _id })
   } catch (err) {
     if (addressIds && addressIds.length) {
       await addressService.deleteItem(addressIds)
