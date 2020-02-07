@@ -195,8 +195,9 @@ const routes = [
           contact: {
             type: 'array',
             items: {
-              type: 'string',
+              type: 'object',
               properties: {
+                _id: { type: 'string' },
                 cellphone: { type: 'string' }
               }
             }

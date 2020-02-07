@@ -2,6 +2,17 @@ const Contact = require('../models/Contact')
 const baseService = require('./base.service')
 
 const update = (contact) => {
+  if (!Array.isArray(contact)) {
+    contact = [contact]
+  }
+
+  contact = contact.map((currentContact) => {
+    return {
+      _id: currentContact._id,
+      cellphone: getFormattedCellphone(currentContact)
+    }
+  })
+
   return baseService.update(Contact, contact)
 }
 
@@ -80,6 +91,10 @@ const validate = (contact) => {
 }
 
 const getFormattedCellphone = (cellphone) => {
+  if (cellphone.cellphone) {
+    cellphone = cellphone.cellphone
+  }
+
   const ddd = cellphone.substring(0, 2)
   const final = cellphone.substring(cellphone.length - 4)
   const meio = cellphone.substring(2, cellphone.indexOf(final))
