@@ -23,7 +23,13 @@ const insert = (person) => {
 }
 
 const getById = (_id) => {
-  return baseService.getById(Person, _id)
+  return baseService.getById(Person, _id, [{
+    path: 'address',
+    populate: {
+      path: 'uf',
+      model: 'State'
+    }
+  }, 'contact'])
 }
 
 const deleteItem = (_id) => {
