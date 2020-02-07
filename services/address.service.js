@@ -30,6 +30,10 @@ const get = (query) => {
   return baseService.get(Address, query)
 }
 
+const getById = (_id) => {
+  return baseService.getById(Address, _id)
+}
+
 const insert = (address) => {
   return new Promise((resolve) => {
     if (!Array.isArray(address)) {
@@ -128,5 +132,6 @@ module.exports = {
   get,
   insert,
   deleteItem,
-  validate
+  validate,
+  getById
 }

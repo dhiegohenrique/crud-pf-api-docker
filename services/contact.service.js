@@ -20,6 +20,10 @@ const get = (query) => {
   return baseService.get(Contact, query)
 }
 
+const getById = (_id) => {
+  return baseService.getById(Contact, _id)
+}
+
 const insert = (contact) => {
   if (!Array.isArray(contact)) {
     contact = [contact]
@@ -107,5 +111,6 @@ module.exports = {
   insert,
   deleteItem,
   validate,
-  getFormattedCellphone
+  getFormattedCellphone,
+  getById
 }

@@ -20,8 +20,13 @@ const put = (person) => {
   return client.put('/person', person)
 }
 
+const deletePerson = (_id) => {
+  return client.delete(`/person/${new String(_id)}`)
+}
+
 module.exports = {
   get,
   post,
-  put
+  put,
+  deletePerson
 }

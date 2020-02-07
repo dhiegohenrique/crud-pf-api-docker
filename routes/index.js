@@ -120,7 +120,7 @@ const routes = [
     schema: {
       summary: 'Retornar uma pessoa',
       params: {
-        type: 'string',
+        type: 'object',
         properties: {
           id: { type: 'string' }
         }
@@ -222,7 +222,7 @@ const routes = [
     schema: {
       summary: 'Excluir uma pessoa',
       params: {
-        type: 'string',
+        type: 'object',
         properties: {
           id: { type: 'string' }
         }

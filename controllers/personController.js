@@ -89,6 +89,7 @@ exports.delete = async (req, res) => {
   try {
     const id = req.params.id
     const currentPerson = await personService.getAddressAndContact(id)
+
     const person = await personService.deleteItem(id)
     if (person) {
       await addressService.deleteItem(currentPerson.address)

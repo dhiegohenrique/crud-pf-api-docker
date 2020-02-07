@@ -96,7 +96,7 @@ describe('Person', () => {
     compareAddress(updatedPerson.address[0], updatedAddress)
   })
 
-  it('Should update contact', async () => {
+  xit('Should update contact', async () => {
     let { person } = await insertPerson()
     const personId = await personService.insert(person)
 
@@ -118,6 +118,24 @@ describe('Person', () => {
     updatedContact = JSON.parse(JSON.stringify(updatedContact))
 
     compareContact(updatedPerson.contact[0], updatedContact)
+  })
+
+  it('Should delete person', async () => {
+    let { person } = await insertPerson()
+    let personId = await personService.insert(person)
+    personId = personId[0]
+
+    const res = await utils.deletePerson(personId)
+    expect(res.status).to.equal(HttpStatus.NO_CONTENT)
+
+    const deletedPerson = await personService.getById(personId)
+    expect(deletedPerson).to.be.null
+
+    const deletedAddress = await addressService.getById(person.address)
+    expect(deletedAddress).to.be.null
+
+    const deletedContact = await contactService.getById(person.contact)
+    expect(deletedContact).to.be.null
   })
 })
 
