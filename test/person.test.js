@@ -15,7 +15,7 @@ describe('Person', () => {
     time = new Date().getTime()
   })
 
-  xit('Should add new person', async () => {
+  it('Should add new person', async () => {
     const person = getPerson()
 
     const res = await utils.post(person)
@@ -25,7 +25,7 @@ describe('Person', () => {
     expect(insertedPerson._id).to.be.not.null
   })
 
-  xit('Should update person data', async () => {
+  it('Should update person data', async () => {
     let { person, personAddress, personContact } = await insertPerson()
 
     const personId = await personService.insert(person)
@@ -67,7 +67,7 @@ describe('Person', () => {
     compareContact(personContact[0], updatedContact)
   })
 
-  xit('Should update address', async () => {
+  it('Should update address', async () => {
     let { person } = await insertPerson()
     const personId = await personService.insert(person)
 
@@ -96,7 +96,7 @@ describe('Person', () => {
     compareAddress(updatedPerson.address[0], updatedAddress)
   })
 
-  xit('Should update contact', async () => {
+  it('Should update contact', async () => {
     let { person } = await insertPerson()
     const personId = await personService.insert(person)
 
@@ -120,7 +120,7 @@ describe('Person', () => {
     compareContact(updatedPerson.contact[0], updatedContact)
   })
 
-  xit('Should delete person', async () => {
+  it('Should delete person', async () => {
     let { person } = await insertPerson()
     let personId = await personService.insert(person)
     personId = personId[0]
@@ -140,7 +140,7 @@ describe('Person', () => {
 
   it('Should return all person', async () => {
     const arrayPerson = []
-    for (let index = 0; index < 3; index++) {
+    for (let index = 0;index < 3;index++) {
       let { person } = await insertPerson()
       let personId = await personService.insert(person)
       person._id = personId[0]
@@ -154,7 +154,7 @@ describe('Person', () => {
     const currentPerson = res.data
     expect(currentPerson.length).to.equal(arrayPerson.length)
 
-    for (let index = 0; index < currentPerson.length; index++) {
+    for (let index = 0;index < currentPerson.length;index++) {
       const person = currentPerson[index]
       Object.keys(person).forEach((key) => {
         const value = person[key]
@@ -163,6 +163,23 @@ describe('Person', () => {
         }
       })
     }
+  })
+
+  it('Should return person by id', async () => {
+    let { person } = await insertPerson()
+    let personId = await personService.insert(person)
+    person._id = personId[0]
+
+    const res = await utils.getById(person._id)
+    expect(res.status).to.equal(HttpStatus.OK)
+
+    person = res.data
+    Object.keys(person).forEach((key) => {
+      const value = person[key]
+      if (typeof value === 'string' || value instanceof String) {
+        expect(value).to.be.not.null
+      }
+    })
   })
 })
 
