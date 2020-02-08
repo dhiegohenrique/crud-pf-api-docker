@@ -13,7 +13,7 @@ const get = (query) => {
 }
 
 const insert = (person) => {
-  person.creationDate = new Date()
+  person.creationDate = moment().toDate()
 
   person.address = person.address.map((address) => {
     return new ObjectId(address)

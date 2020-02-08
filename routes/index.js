@@ -83,6 +83,7 @@ const routes = [
               cpf: { type: 'string' },
               email: { type: 'string' },
               birthDate: { type: 'string' },
+              creationDate: { type: 'string' },
               address: {
                 type: 'array',
                 items: {
@@ -135,6 +136,7 @@ const routes = [
             cpf: { type: 'string' },
             email: { type: 'string' },
             birthDate: { type: 'string' },
+            creationDate: { type: 'string' },
             address: {
               type: 'array',
               items: {

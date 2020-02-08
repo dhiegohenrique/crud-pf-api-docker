@@ -39,9 +39,6 @@ const personSchema = new mongoose.Schema({
       required: true
     }
   ]
-},{
-  collection: 'people',
-  timestamps: true
 })
 
 personSchema.path('cpf').validate((cpf) => {
