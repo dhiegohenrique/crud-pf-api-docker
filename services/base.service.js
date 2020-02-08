@@ -6,7 +6,6 @@ const update = (Model, item) => {
       }
 
       const newItems = await updateOrInsert(Model, item)
-      await deleteRemainingItems(Model, item)
       resolve(newItems)
     } catch (error) {
       reject(error)
@@ -95,5 +94,6 @@ module.exports = {
   get,
   insert,
   getById,
-  deleteItem
+  deleteItem,
+  deleteRemainingItems
 }

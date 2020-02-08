@@ -1,11 +1,28 @@
 const Person = require('../models/Person')
+const Address = require('../models/Address')
+const Contact = require('../models/Contact')
 const baseService = require('./base.service')
 const ObjectId = require('mongodb').ObjectID
 const moment = require('moment-timezone')
 moment.tz.setDefault('America/Sao_Paulo')
 
 const update = (person) => {
-  return baseService.update(Person, person)
+  return new Promise(async(resolve) => {
+    const newItems = await baseService.update(Person, person)
+    const addressIds = getIds(person.address)
+    const contactIds = getIds(person.contact)
+
+    await baseService.deleteRemainingItems(Address, addressIds)
+    await baseService.deleteRemainingItems(Contact, contactIds)
+
+    resolve(newItems)
+  })
+}
+
+const getIds = (array) => {
+  return array.map((item) => {
+    return item._id
+  })
 }
 
 const get = (query) => {
