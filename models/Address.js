@@ -18,7 +18,7 @@ const addressSchema = new mongoose.Schema({
   },
   uf: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Uf'
+    ref: 'State'
   },
 })
 

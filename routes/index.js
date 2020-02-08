@@ -147,7 +147,12 @@ const routes = [
                   cep: { type: 'string' },
                   neighborhood: { type: 'string' },
                   city: { type: 'string' },
-                  uf: { type: 'string' }
+                  uf: {
+                    type: 'object',
+                    properties: {
+                      uf: { type: 'string' }
+                    }
+                  }
                 }
               }
             },
