@@ -78,7 +78,7 @@ const routes = [
           items: {
             type: 'object',
             properties: {
-              id: { type: 'string' },
+              _id: { type: 'string' },
               name: { type: 'string' },
               cpf: { type: 'string' },
               email: { type: 'string' },
@@ -131,7 +131,7 @@ const routes = [
           description: 'Pessoa retornada com sucesso.',
           type: 'object',
           properties: {
-            id: { type: 'string' },
+            _id: { type: 'string' },
             name: { type: 'string' },
             cpf: { type: 'string' },
             email: { type: 'string' },
