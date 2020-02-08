@@ -5,28 +5,50 @@ const update = (Model, item) => {
         item = [item]
       }
 
-      const newItems = []
-      item.forEach(async (currentItem, index) => {
-        const _id = currentItem._id
-        if (_id) {
-          if (Object.keys(currentItem).length > 1) {
-            await Model.findByIdAndUpdate(_id, currentItem)
-          } else {
-            await Model.remove({ _id })
-          }
-        } else {
-          let newModel = new Model(currentItem)
-          newModel = await newModel.save()
-          newItems.push(newModel._id)
-        }
-
-        if (index === (item.length - 1)) {
-          resolve(newItems)
-        }
-      })
+      const newItems = await updateOrInsert(Model, item)
+      await deleteRemainingItems(Model, item)
+      resolve(newItems)
     } catch (error) {
       reject(error)
     }
+  })
+}
+
+const updateOrInsert = (Model, item) => {
+  return new Promise((resolve) => {
+    const newItems = []
+    item.forEach(async (currentItem, index) => {
+      const _id = currentItem._id
+      if (_id) {
+        if (Object.keys(currentItem).length > 1) {
+          await Model.findByIdAndUpdate(_id, currentItem)
+        } else {
+          await Model.remove({ _id })
+        }
+      } else {
+        let newModel = new Model(currentItem)
+        newModel = await newModel.save()
+        currentItem._id = newModel._id
+        newItems.push(newModel._id)
+      }
+
+      if (index === (item.length - 1)) {
+        resolve(newItems)
+      }
+    })
+  })
+}
+
+const deleteRemainingItems = (Model, item) => {
+  return new Promise((resolve) => {
+    const ids = item.map((currentItem) => {
+      return currentItem._id
+    })
+
+    Model.deleteMany({ _id: { $nin: ids } })
+      .then(() => {
+        resolve()
+      })
   })
 }
 

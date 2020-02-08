@@ -142,7 +142,7 @@ const routes = [
               items: {
                 type: 'object',
                 properties: {
-                  id: { type: 'string' },
+                  _id: { type: 'string' },
                   street: { type: 'string' },
                   cep: { type: 'string' },
                   neighborhood: { type: 'string' },
@@ -161,7 +161,7 @@ const routes = [
               items: {
                 type: 'object',
                 properties: {
-                  id: { type: 'string' },
+                  _id: { type: 'string' },
                   cellphone: { type: 'string' }
                 }
               }
