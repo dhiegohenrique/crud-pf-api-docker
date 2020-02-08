@@ -15,6 +15,7 @@ npm i
 ### Para executar
 ```
 npm start
+estará rodando em http://localhost:3000
 ```
 
 ### Para executar os testes
