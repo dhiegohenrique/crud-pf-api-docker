@@ -40,7 +40,7 @@ const updateOrInsert = (Model, item) => {
 
 const deleteRemainingItems = (Model, _ids) => {
   return new Promise((resolve) => {
-    Model.deleteMany({ _id: { $nin: _ids } })
+    Model.deleteMany({ _id: { $in: _ids } })
       .then((res) => {
         resolve(res)
       })
