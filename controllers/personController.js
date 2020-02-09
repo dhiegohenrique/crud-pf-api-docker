@@ -70,7 +70,19 @@ exports.update = async (req, res) => {
     const person = req.body
     const address = person.address
     if (address && address.length) {
-      await addressService.update(address)
+      let addressIds = await addressService.update(address)
+      let index = 0
+
+      address.forEach((currentAddress) => {
+        if (!currentAddress._id) {
+          currentAddress._id = addressIds[index]
+          index++
+        }
+      })
+
+      person.address = address.map((currentAddress) => {
+        return currentAddress._id
+      })
     }
 
     const contact = person.contact
