@@ -12,33 +12,36 @@ const update = (person) => {
 
     const { _id } = person
     const currentAddressIds = person.address
+    if (currentAddressIds && currentAddressIds.length) {
+      const addressIds = await getIds(_id, 'address')
+      const diffAddressIds = addressIds.filter((_id) => {
+        const index = currentAddressIds.findIndex((currentAddressId) => {
+          return new String(currentAddressId).includes(_id)
+        })
 
-    const addressIds = await getIds(_id, 'address')
-    const diffAddressIds = addressIds.filter((_id) => {
-      const index = currentAddressIds.findIndex((currentAddressId) => {
-        return new String(currentAddressId).includes(_id)
+        return index === -1
       })
 
-      return index === -1
-    })
-
-    if (diffAddressIds && diffAddressIds.length) {
-      await baseService.deleteRemainingItems(Address, diffAddressIds)
+      if (diffAddressIds && diffAddressIds.length) {
+        await baseService.deleteRemainingItems(Address, diffAddressIds)
+      }
     }
 
     const currentContactIds = person.contact
-    const contactIds = await getIds(_id, 'contact')
+    if (currentContactIds && currentContactIds.length) {
+      const contactIds = await getIds(_id, 'contact')
 
-    const diffContactIds = contactIds.filter((_id) => {
-      const index = currentContactIds.findIndex((currentContactId) => {
-        return new String(currentContactId).includes(_id)
+      const diffContactIds = contactIds.filter((_id) => {
+        const index = currentContactIds.findIndex((currentContactId) => {
+          return new String(currentContactId).includes(_id)
+        })
+
+        return index === -1
       })
 
-      return index === -1
-    })
-
-    if (diffContactIds && diffContactIds.length) {
-      await baseService.deleteRemainingItems(Contact, diffContactIds)
+      if (diffContactIds && diffContactIds.length) {
+        await baseService.deleteRemainingItems(Contact, diffContactIds)
+      }
     }
 
     resolve(newItems)

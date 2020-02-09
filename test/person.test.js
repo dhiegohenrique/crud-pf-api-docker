@@ -5,14 +5,21 @@ const utils = require('./utils')
 const personService = require('../services/person.service')
 const addressService = require('../services/address.service')
 const contactService = require('../services/contact.service')
+const Person = require('../models/Person')
+const Address = require('../models/Contact')
+const Contact = require('../models/Contact')
 const moment = require('moment')
 const cloneDeep = require('clone-deep')
 let time
 
 describe('Person', () => {
 
-  beforeEach(() => {
+  beforeEach(async () => {
     time = new Date().getTime()
+
+    await Person.deleteMany()
+    await Address.deleteMany()
+    await Contact.deleteMany()
   })
 
   it('Should add new person', async () => {
