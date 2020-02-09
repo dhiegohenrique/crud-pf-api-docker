@@ -11,14 +11,34 @@ const update = (person) => {
     const newItems = await baseService.update(Person, person)
 
     const { _id } = person
+    const currentAddressIds = person.address
+
     const addressIds = await getIds(_id, 'address')
-    if (addressIds && addressIds.length) {
-      await baseService.deleteRemainingItems(Address, addressIds)
+    const diffAddressIds = addressIds.filter((_id) => {
+      const index = currentAddressIds.findIndex((currentAddressId) => {
+        return new String(currentAddressId).includes(_id)
+      })
+
+      return index === -1
+    })
+
+    if (diffAddressIds && diffAddressIds.length) {
+      await baseService.deleteRemainingItems(Address, diffAddressIds)
     }
 
+    const currentContactIds = person.contact
     const contactIds = await getIds(_id, 'contact')
-    if (contactIds && contactIds.length) {
-      await baseService.deleteRemainingItems(Contact, contactIds)
+
+    const diffContactIds = contactIds.filter((_id) => {
+      const index = currentContactIds.findIndex((currentContactId) => {
+        return new String(currentContactId).includes(_id)
+      })
+
+      return index === -1
+    })
+
+    if (diffContactIds && diffContactIds.length) {
+      await baseService.deleteRemainingItems(Contact, diffContactIds)
     }
 
     resolve(newItems)
