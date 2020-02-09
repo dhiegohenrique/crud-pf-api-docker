@@ -75,7 +75,19 @@ exports.update = async (req, res) => {
 
     const contact = person.contact
     if (contact && contact.length) {
-      await contactService.update(contact)
+      let contactIds = await contactService.update(contact)
+      let index = 0
+
+      contact.forEach((currentContact) => {
+        if (!currentContact._id) {
+          currentContact._id = contactIds[index]
+          index++
+        }
+      })
+
+      person.contact = contact.map((currentContact) => {
+        return currentContact._id
+      })
     }
 
     const newItems = await personService.update(person)

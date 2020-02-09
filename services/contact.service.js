@@ -99,6 +99,8 @@ const getFormattedCellphone = (cellphone) => {
     cellphone = cellphone.cellphone
   }
 
+  cellphone = cellphone.replace(/\D/g, '')
+
   const ddd = cellphone.substring(0, 2)
   const final = cellphone.substring(cellphone.length - 4)
   const meio = cellphone.substring(2, cellphone.indexOf(final))

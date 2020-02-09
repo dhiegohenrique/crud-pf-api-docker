@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
 const config = require('../config/config')()
 const mongooseRegisterEvents = require('./mongooseRegisterEvents')
 const State = require('../models/State')

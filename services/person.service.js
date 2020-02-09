@@ -7,21 +7,32 @@ const moment = require('moment-timezone')
 moment.tz.setDefault('America/Sao_Paulo')
 
 const update = (person) => {
-  return new Promise(async(resolve) => {
+  return new Promise(async (resolve) => {
     const newItems = await baseService.update(Person, person)
-    const addressIds = getIds(person.address)
-    const contactIds = getIds(person.contact)
 
-    await baseService.deleteRemainingItems(Address, addressIds)
-    await baseService.deleteRemainingItems(Contact, contactIds)
+    const { _id } = person
+    const addressIds = await getIds(_id, 'address')
+    if (addressIds && addressIds.length) {
+      await baseService.deleteRemainingItems(Address, addressIds)
+    }
+
+    const contactIds = await getIds(_id, 'contact')
+    if (contactIds && contactIds.length) {
+      await baseService.deleteRemainingItems(Contact, contactIds)
+    }
 
     resolve(newItems)
   })
 }
 
-const getIds = (array) => {
-  return array.map((item) => {
-    return item._id
+const getIds = (_id, field) => {
+  return new Promise(async (resolve) => {
+    const person = await Person.findById(_id).select(field)
+    const _ids = person[field].map((currentField) => {
+      return currentField
+    })
+
+    resolve(_ids)
   })
 }
 
