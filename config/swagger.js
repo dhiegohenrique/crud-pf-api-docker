@@ -1,3 +1,5 @@
+const config = require('./config')()
+
 exports.options = {
   routePrefix: '/documentation',
   exposeRoute: true,
@@ -7,7 +9,7 @@ exports.options = {
       description: 'CRUD para manter cadastros de pessoas físicas com seus dados, endereços e contatos.',
       version: '1.0.0'
     },
-    host: 'localhost',
+    host: `localhost:${config.port}`,
     schemes: ['http'],
     consumes: ['application/json'],
     produces: ['application/json'],
