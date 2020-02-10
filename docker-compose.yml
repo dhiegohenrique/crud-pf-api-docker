@@ -1,0 +1,114 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: npm start
+    ports:
+      - 3000:3000
+    env_file: ./atena-api/.env
+    environment:
+      - environment=local
+    volumes:
+      - ./atena-api:/app
+      - /app/node_modules/
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+
+  webapi:
+    build:
+      context: ./portal.webapi
+      dockerfile: ./Portal.WebApi/Dockerfile
+    ports:
+      - 3008:3008
+
+  prioritas:
+    build:
+      context: ./prioritas
+      dockerfile: ./Prioritas.Web/Dockerfile
+    ports:
+      - 3011:80
+    depends_on:
+      - webapi
+
+  portal-client:
+    build:
+      context: ./portal.client
+      dockerfile: ./build/Dockerfile
+    command: npm run dev
+    ports:
+      - 3009:8080
+    volumes:
+      - ./portal.client:/app
+    depends_on:
+      - atena-api
+      - webapi
+
+  atena-client:
+    build:
+      context: ./atena-client
+      dockerfile: ./build/Dockerfile
+    command: npm run dev
+    ports:
+      - 3007:8081
+    environment:
+      - ENVIRONMENT=local
+    volumes:
+      - ./atena-client:/app
+    depends_on:
+      - atena-api
+
+  pdfied:
+    build: ./pdfied
+    command: npm run dev
+    ports:
+      - 3005:3005
+    volumes:
+      - ./pdfied:/app
+      - /app/node_modules
+    environment:
+      - GOOGLE_SERVICE_KEY=$GOOGLE_SERVICE_KEY
+      
+  mail-api:
+    build: ./mail-api
+    command: npm run dev
+    ports:
+      - 3010:3010
+    volumes:
+      - ./mail-api:/app
+    environment:
+      - EMAIL_NAME
+      - EMAIL_ACCOUNT
+      - EMAIL_PASS
+
+  bifrost:
+    build:
+      context: ./bifrost/environments/local/
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - atena-api
+      - atena-client
+      - portal-client
+      - webapi
+      - mail-api
+
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles --logpath=/dev/null
+
+  socket-service:
+    build: ./socket-service
+    command: npm run dev
+    ports:
+      - 3019:3019
+    volumes:
+      - ./socket-service:/app
+    env_file: ./socket-service/.env
+
