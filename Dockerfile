@@ -12,6 +12,6 @@ RUN npm install --quiet
 
 COPY . .
 
-# EXPOSE 3000
+EXPOSE 3000
 
-CMD [ "npm", "start", "-p", "$PORT" ]
+CMD [ "npm", "start"]
