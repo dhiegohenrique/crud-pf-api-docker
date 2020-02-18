@@ -1,7 +1,7 @@
 const config = require('./config')()
 let url
 if (config.env === 'production') {
-  url = 'https://crud-pf-api-docker.herokuapp.com'
+  url = 'crud-pf-api-docker.herokuapp.com'
 } else {
   url = `localhost:${config.port}`
 }
