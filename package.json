@@ -25,7 +25,7 @@
     "axios": "^0.19.2",
     "chai": "^4.2.0",
     "clone-deep": "^4.0.1",
-    "mocha": "^7.0.1",
+    "mocha": "^10.2.0",
     "mocha-multi-reporters": "^1.1.7",
     "nodemon": "^2.0.2"
   },
